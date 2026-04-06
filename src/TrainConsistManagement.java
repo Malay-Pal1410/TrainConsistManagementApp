@@ -1,51 +1,40 @@
 public class TrainConsistManagement {
 
-    // ---- CUSTOM RUNTIME EXCEPTION ----
-    static class CargoSafetyException extends RuntimeException {
-        public CargoSafetyException(String message) {
-            super(message);
-        }
-    }
-
-    // Goods Bogie model
-    static class GoodsBogie {
-        String shape;
-        String cargo;
-
-        GoodsBogie(String shape) {
-            this.shape = shape;
-        }
-
-        // Assign cargo with safety validation
-        void assignCargo(String cargo) {
-            try {
-                // Rule: Rectangular bogie cannot carry petroleum
-                if (this.shape.equalsIgnoreCase("Rectangular") && cargo.equalsIgnoreCase("Petroleum")) {
-                    throw new CargoSafetyException("Unsafe cargo assignment!");
-                }
-                this.cargo = cargo;
-                System.out.println("Cargo assigned successfully -> " + cargo);
-            } catch (CargoSafetyException e) {
-                System.out.println("Error: " + e.getMessage());
-            } finally {
-                System.out.println("Cargo validation completed for " + this.shape + " bogie\n");
-            }
-        }
-    }
-
     public static void main(String[] args) {
         System.out.println("=================================================");
-        System.out.println("        UC15 - Safe Cargo Assignment             ");
+        System.out.println("    UC16 - Manual Sorting using Bubble Sort      ");
         System.out.println("=================================================\n");
 
-        // Safe Assignment
-        GoodsBogie cylindricalBogie = new GoodsBogie("Cylindrical");
-        cylindricalBogie.assignCargo("Petroleum");
+        // Create array of passenger bogie capacities
+        int[] capacities = {72, 56, 24, 70, 60};
 
-        // Unsafe Assignment Handling
-        GoodsBogie rectangularBogie = new GoodsBogie("Rectangular");
-        rectangularBogie.assignCargo("Petroleum");
+        // Display original order
+        System.out.println("Original Capacities:");
+        for (int c : capacities) {
+            System.out.print(c + " ");
+        }
+        System.out.println();
 
-        System.out.println("UC15 runtime handling completed...");
+        // ---- BUBBLE SORT LOGIC ----
+        // Outer loop controls number of passes
+        int n = capacities.length;
+        for (int i = 0; i < n - 1; i++) {
+            // Inner loop compares adjacent elements
+            for (int j = 0; j < n - i - 1; j++) {
+                // Swap if left element is greater than right element
+                if (capacities[j] > capacities[j + 1]) {
+                    int temp = capacities[j];
+                    capacities[j] = capacities[j + 1];
+                    capacities[j + 1] = temp;
+                }
+            }
+        }
+
+        // Display sorted result
+        System.out.println("\nSorted Capacities (Ascending):");
+        for (int c : capacities) {
+            System.out.print(c + " ");
+        }
+        System.out.println("\n\nUC16 sorting completed...");
     }
 }
