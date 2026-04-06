@@ -19,5 +19,6 @@ public class TrainConsistManagement {
         System.out.println("Current Train Consist: " + trainConsist);
 
         System.out.println("System ready for operations...");
+        System.out.println();
     }
 }
