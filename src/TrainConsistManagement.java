@@ -1,45 +1,51 @@
 public class TrainConsistManagement {
 
-    // CUSTOM EXCEPTION
-    static class InvalidCapacityException extends Exception {
-        public InvalidCapacityException(String message) {
+    // ---- CUSTOM RUNTIME EXCEPTION ----
+    static class CargoSafetyException extends RuntimeException {
+        public CargoSafetyException(String message) {
             super(message);
         }
     }
 
-    // Passenger Bogie model with validation
-    static class PassengerBogie {
-        String type;
-        int capacity;
+    // Goods Bogie model
+    static class GoodsBogie {
+        String shape;
+        String cargo;
 
-        public PassengerBogie(String type, int capacity) throws InvalidCapacityException {
-            if (capacity <= 0) {
-                throw new InvalidCapacityException("Capacity must be greater than zero");
+        GoodsBogie(String shape) {
+            this.shape = shape;
+        }
+
+        // Assign cargo with safety validation
+        void assignCargo(String cargo) {
+            try {
+                // Rule: Rectangular bogie cannot carry petroleum
+                if (this.shape.equalsIgnoreCase("Rectangular") && cargo.equalsIgnoreCase("Petroleum")) {
+                    throw new CargoSafetyException("Unsafe cargo assignment!");
+                }
+                this.cargo = cargo;
+                System.out.println("Cargo assigned successfully -> " + cargo);
+            } catch (CargoSafetyException e) {
+                System.out.println("Error: " + e.getMessage());
+            } finally {
+                System.out.println("Cargo validation completed for " + this.shape + " bogie\n");
             }
-            this.type = type;
-            this.capacity = capacity;
         }
     }
 
     public static void main(String[] args) {
         System.out.println("=================================================");
-        System.out.println("     UC14 - Handle Invalid Bogie Capacity        ");
+        System.out.println("        UC15 - Safe Cargo Assignment             ");
         System.out.println("=================================================\n");
 
-        try {
-            // Attempt to create a valid bogie
-            PassengerBogie validBogie = new PassengerBogie("Sleeper", 72);
-            System.out.println("Created Bogie: " + validBogie.type + " -> " + validBogie.capacity);
+        // Safe Assignment
+        GoodsBogie cylindricalBogie = new GoodsBogie("Cylindrical");
+        cylindricalBogie.assignCargo("Petroleum");
 
-            // Attempt to create an invalid bogie (this will throw an exception)
-            PassengerBogie invalidBogie = new PassengerBogie("AC Chair", 0);
-            System.out.println("Created Bogie: " + invalidBogie.type + " -> " + invalidBogie.capacity);
+        // Unsafe Assignment Handling
+        GoodsBogie rectangularBogie = new GoodsBogie("Rectangular");
+        rectangularBogie.assignCargo("Petroleum");
 
-        } catch (InvalidCapacityException e) {
-            // Handle the exception safely
-            System.out.println("Error: " + e.getMessage());
-        }
-
-        System.out.println("\nUC14 exception handling completed...");
+        System.out.println("UC15 runtime handling completed...");
     }
 }
