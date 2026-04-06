@@ -26,6 +26,7 @@ public class TrainConsistManagement {
         System.out.println("Note:");
         System.out.println("LinkedHashSet preserves insertion order and removes duplicates automatically.\n");
 
+
         System.out.println("UC5 formation setup completed...");
     }
 }
